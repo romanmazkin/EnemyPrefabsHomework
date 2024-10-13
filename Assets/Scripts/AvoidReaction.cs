@@ -2,21 +2,15 @@ using UnityEngine;
 
 public class AvoidReaction : IBehaviour
 {
-    private EnemyController _enemy;
-    private PlayerController _player;
+    private Enemy _enemy;
+    private Transform _player;
     private Mover _mover;
-    private Animator _animator;
 
-    public AvoidReaction(EnemyController enemy, PlayerController player)
+    public AvoidReaction(Enemy enemy, Transform player)
     {
         _enemy = enemy;
         _player = player;
-    }
-
-    public void Awake()
-    {
-        _mover = _enemy.gameObject.GetComponent<Mover>();
-        _animator = _enemy.gameObject.GetComponent<Animator>();
+        _mover = enemy.gameObject.GetComponent<Mover>();
     }
 
     public void Update()
@@ -26,6 +20,5 @@ public class AvoidReaction : IBehaviour
 
         _mover.MoveTo(moveDirection.normalized);
         _mover.RotationTo(moveDirection.normalized);
-        _animator.SetBool("IsRunning", true);
     }
 }

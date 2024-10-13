@@ -2,18 +2,13 @@ using UnityEngine;
 
 public class ScaredReaction : IBehaviour
 {
-    private EnemyController _enemy;
+    private Enemy _enemy;
     private ParticleSystem _particleSystem;
 
-    public ScaredReaction(EnemyController enemy, ParticleSystem particleSystem)
+    public ScaredReaction(Enemy enemy, ParticleSystem particleSystem)
     {
         _enemy = enemy;
         _particleSystem = particleSystem;
-    }
-
-    public void Awake()
-    {
-        return;
     }
 
     public void Update()

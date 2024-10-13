@@ -2,23 +2,19 @@ using UnityEngine;
 
 public class RandomMove : IBehaviour
 {
-    private EnemyController _enemy;
+    private const float MinDistanceToTarget = 0.1f;
+
+    private Enemy _enemy;
     private Mover _mover;
-    private Animator _animator;
 
     private Vector3 _randomTarget;
 
     private float _randomValue = 10f;
 
-    public RandomMove(EnemyController enemy)
+    public RandomMove(Enemy enemy)
     {
         _enemy = enemy;
-    }
-
-    public void Awake()
-    {
-        _mover = _enemy.gameObject.GetComponent<Mover>();
-        _animator = _enemy.gameObject.GetComponent<Animator>();
+        _mover = enemy.gameObject.GetComponent<Mover>();
     }
 
     public void Update()
@@ -26,14 +22,13 @@ public class RandomMove : IBehaviour
         Vector3 distance = _randomTarget - _enemy.transform.position;
         Vector3 moveDirection = new Vector3(distance.x, 0, distance.z);
 
-        if (moveDirection.magnitude < 0.1f)
+        if (moveDirection.magnitude < MinDistanceToTarget)
         {
             GenerateDirection();
         }
 
         _mover.MoveTo(moveDirection.normalized);
         _mover.RotationTo(moveDirection.normalized);
-        _animator.SetBool("IsRunning", true);
     }
 
     private void GenerateDirection()
