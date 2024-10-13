@@ -34,41 +34,41 @@ public class EnemySpawner : MonoBehaviour
     {
         Enemy enemy = Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity, null).GetComponent<Enemy>();
 
-        DetermineMoveBehaviour(enemy, spawnPoint.moveBehaviours);
-        DetermineReactionBehaviour(enemy, spawnPoint.reactionBehaviours);
+        _moveBehaviour = DetermineMoveBehaviour(enemy, spawnPoint.moveBehaviours);
+        _reactionBehaviour = DetermineReactionBehaviour(enemy, spawnPoint.reactionBehaviours);
 
         enemy.Initialize(_moveBehaviour, _reactionBehaviour);
     }
 
-    private void DetermineReactionBehaviour(Enemy enemy, EnemyReactionBehaviours reactionBehaviours)
+    private IBehaviour DetermineReactionBehaviour(Enemy enemy, EnemyReactionBehaviours reactionBehaviours)
     {
         switch (reactionBehaviours)
         {
             case EnemyReactionBehaviours.Avoid:
-                enemy.SetBehaviour(new AvoidReaction(enemy, _player));
-                break;
+                return new AvoidReaction(enemy, _player);
+                
             case EnemyReactionBehaviours.Agressive:
-                enemy.SetBehaviour(new AgressiveReaction(enemy, _player));
-                break;
+                return new AgressiveReaction(enemy, _player);
+                
             case EnemyReactionBehaviours.Scared:
-                enemy.SetBehaviour(new ScaredReaction(enemy, _particleSystem));
-                break;
+                return new ScaredReaction(enemy, _particleSystem);
         }
+        return new IdleMove();
     }
 
-    private void DetermineMoveBehaviour(Enemy enemy, EnemyMoveBehaviours moveBehaviours)
+    private IBehaviour DetermineMoveBehaviour(Enemy enemy, EnemyMoveBehaviours moveBehaviours)
     {
         switch (moveBehaviours)
         {
             case EnemyMoveBehaviours.Idle:
-                enemy.SetBehaviour(new IdleMove());
-                break;
+                return(new IdleMove());
+
             case EnemyMoveBehaviours.Patrol:
-                enemy.SetBehaviour(new PatrolMove(enemy, _targetPositions));
-                break;
+                return(new PatrolMove(enemy, _targetPositions));
+
             case EnemyMoveBehaviours.Random:
-                enemy.SetBehaviour(new RandomMove(enemy));
-                break;
+                return(new RandomMove(enemy));
         }
+        return new IdleMove();
     }
 }

@@ -7,17 +7,24 @@ public class Mover : MonoBehaviour
     private float _deadZone = 0.1f;
 
     private CharacterController _characterController;
+    private Animator _animator;
 
     private void Awake()
     {
-        _characterController = GetComponentInParent<CharacterController>();
+        _characterController = GetComponent<CharacterController>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     public void MoveTo(Vector3 direction)
     {
         if (direction.magnitude > _deadZone)
         {
+            _animator.SetBool("IsRunning", true);
             _characterController.Move(direction.normalized * _speed * Time.deltaTime);
+        }
+        else
+        {
+            _animator.SetBool("IsRunning", false);
         }
     }
 

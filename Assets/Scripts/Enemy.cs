@@ -19,18 +19,19 @@ public class Enemy : MonoBehaviour
         _currentBehaviour = _moveBehaviour;
     }
 
-    public void SetBehaviour(IBehaviour currentBehaviour)
-    {
-        _currentBehaviour = currentBehaviour;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        _currentBehaviour = _reactionBehaviour;
+        if (other.gameObject.GetComponent<PlayerController>() != null)
+        {
+            _currentBehaviour = _reactionBehaviour;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        _currentBehaviour = _moveBehaviour;
+        if (other.gameObject.GetComponent<PlayerController>() != null)
+        {
+            _currentBehaviour = _moveBehaviour;
+        }
     }
 }
