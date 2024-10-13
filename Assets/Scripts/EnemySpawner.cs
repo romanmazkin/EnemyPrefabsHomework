@@ -32,7 +32,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemy(SpawnPoint spawnPoint)
     {
-        Enemy enemy = Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity, null);
+        Enemy enemy = Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity, null).GetComponent<Enemy>();
 
         DetermineMoveBehaviour(enemy, spawnPoint.moveBehaviours);
         DetermineReactionBehaviour(enemy, spawnPoint.reactionBehaviours);
